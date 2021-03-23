@@ -1,9 +1,5 @@
 # The user's preferred editor
 
-#EDITOR=ed
-#EDITOR="vi -e"
-#EDITOR=
-
-# The user's preferred visual (can be unset)
-
-#VISUAL
+#EDITOR="vi"
+#EDITOR="nano"
+#EDITOR="emacs"
