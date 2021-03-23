@@ -1,7 +1,8 @@
-# DO NOT WRITE INTO THIS FILE
+# DO NOT WRITE THIS FILE
 # When chromebrew updates, it may replace this file, wiping out any changes
 # you have made.
-# Instead, add custom environment variables to REPLACE_ME_WITH_CREW_PREFIX/etc/env.d/99-custom
+# Instead, add custom environment variables to env.d/99-custom and
+# custom scripting to profile.d/99-custom
 
 # Disable hashing
 set +h
