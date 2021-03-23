@@ -1,0 +1,5 @@
+# The user's preferred pager
+
+#PAGER=more
+#PAGER=less
+#PAGER=most

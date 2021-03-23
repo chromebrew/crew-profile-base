@@ -1,0 +1,26 @@
+# Locale settings
+
+# The user's primary language (defaults to American English)
+# It is HIGHLY RECOMMENDED to use a UTF-8 locale
+LANG="POSIX"
+
+# A colon-delineated list of languages the user knows. Defaults to LANG.
+LANGUAGE="POSIX"
+
+# Extra variables that override the LANG setting
+#LC_CTYPE=
+#LC_NUMERIC=
+#LC_TIME=
+#LC_COLLATE=
+#LC_MONETARY=
+#LC_MESSAGES=
+#LC_PAPER=
+#LC_NAME=
+#LC_ADDRESS=
+#LC_TELEPHONE=
+#LC_MEASUREMENT=
+#LC_IDENTIFICATION=
+
+# This variable overrides all previous variables except LANGUAGE
+# Dangerous to set, leave unset unless you know what you're doing
+#LC_ALL=
