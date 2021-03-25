@@ -10,6 +10,14 @@ Packages put scripts in this directory that contain environment variables to be 
 
 Packages put scripts in this directory that contain code executed by a Bourne-compatible shell.
 
+### bash.d
+
+Packages put scripts in this directory that should only be executed when bash is the running shell. This directory is expected to contain bash completion scripts.
+
+### zsh.d
+
+Packages put scripts in this directory that should only be executed when zsh is the running shell. This directory is expected to contain zsh completion scripts.
+
 ### profile
 
 The Bourne-compatible executable file to be executed when the shell starts. It sets a few default settings that should not be changed, sources all the files in `env.d` then all the files in `profile.d`

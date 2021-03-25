@@ -11,4 +11,14 @@ set +h
 find env.d -type f -exec source {} \;
 
 # Load the profile
-find profile.d type f -exec source {} \;
+find profile.d -type f -exec source {} \;
+
+# Load the bash directory
+if [ "$SHELL" -eq "*/bash" ]; then
+  find bash.d -type -f -exec source {} \;
+fi
+
+# Load the zsh directory
+if [ "$SHELL" -eq "*/zsh" ]; then
+  find zsh.d -type f -exec source {} \;
+fi
