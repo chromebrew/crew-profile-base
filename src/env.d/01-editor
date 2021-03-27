@@ -1,5 +1,6 @@
 # The user's preferred editor
 
 #EDITOR="vi"
+#EDITOR="vim"
 #EDITOR="nano"
 #EDITOR="emacs"
