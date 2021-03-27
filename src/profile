@@ -13,9 +13,6 @@ set +h
 # Load the environment
 for i in "${SYSCONFDIR}"/env.d/*; do source "${i}"; done
 
-# Load the profile
-for i in "${SYSCONFDIR}"/profile.d/*; do source "${i}"; done
-
 # Load the bash directory
 if [ ! -z "${BASH}" ]; then
   for i in "${SYSCONFDIR}"/bash.d/*; do source "${i}"; done

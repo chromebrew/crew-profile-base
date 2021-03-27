@@ -6,10 +6,6 @@ This Chromebrew package sets up shell profile scripts and environment variables.
 
 Packages put scripts in this directory that contain environment variables to be loaded into the shell. Examples include `zoneinfo`'s `TZ`, `xdg-base`'s environment variables and `rust`'s `RUSTUP` and `CARGO` paths. `env.d` also contains a few basic configuration files all Chromebrew systems need.
 
-### profile.d
-
-Packages put scripts in this directory that contain code executed by a Bourne-compatible shell.
-
 ### bash.d
 
 Packages put scripts in this directory that should only be executed when bash is the running shell. This directory is expected to contain bash completion scripts.
@@ -20,7 +16,7 @@ Packages put scripts in this directory that should only be executed when zsh is 
 
 ### profile
 
-The Bourne-compatible executable file to be executed when the shell starts. It sets a few default settings that should not be changed, sources all the files in `env.d` then all the files in `profile.d`
+The Bourne-compatible executable file to be executed when the shell starts. It sets a few default settings that should not be changed, sources all the files in `env.d`.
 
 ## License
 
