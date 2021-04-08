@@ -7,26 +7,29 @@
 # Source the base /etc/profile file
 source /etc/profile
 
+# Find chromebrew prefix
+CREW_PREFIX="$(crew const CREW_PREFIX | sed -e 's:CREW_PREFIX=::g')"
+
 # Find system configuration directory
-SYSCONFDIR="$(crew const CREW_PREFIX | sed -e 's:CREW_PREFIX=::g')/etc"
+CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
 
 # Disable hashing
 set +h
 
 # Load the environment
-for i in "${SYSCONFDIR}"/env.d/*; do source "${i}"; done
+for i in "${CREW_SYSCONFDIR}"/env.d/*; do source "${i}"; done
 
 # Load the profile
 if [ -d ${SYSCONFDIR}/profile.d ]; then
-  for i in "${SYSCONFDIR}"/profile.d/*.sh; do source "${i}"; done
+  for i in "${CREW_SYSCONFDIR}"/profile.d/*.sh; do source "${i}"; done
 fi
 
 # Load the bash directory
 if [ ! -z "${BASH}" ]; then
-  for i in "${SYSCONFDIR}"/bash.d/*; do source "${i}"; done
+  for i in "${CREW_SYSCONFDIR}"/bash.d/*; do source "${i}"; done
 fi
 
 # Load the zsh directory
 if [ ! -z "${ZSH_NAME}" ]; then
-  for i in "${SYSCONFDIR}"/zsh.d/*; do source "${i}"; done
+  for i in "${CREW_SYSCONFDIR}"/zsh.d/*; do source "${i}"; done
 fi
