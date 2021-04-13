@@ -1,6 +1,14 @@
 # The user's preferred editor
 
-#EDITOR="vi"
-#EDITOR="vim"
-#EDITOR="nano"
-#EDITOR="emacs"
+
+# The EDITOR variable is for terminals without special capabilities, programs will prefer VISUAL.
+#EDITOR="vi -e"
+
+# The VISUAL variable is for terminals with special capabilities (X virtual terminals and crosh terminals have these).
+#VISUAL="vi"
+#VISUAL="vim"
+#VISUAL="nano"
+#VISUAL="emacs"
+
+# The SUDOEDITOR variable is for the `sudo -e` and `sudoeditor` commands.
+#SUDOEDITOR=${VISUAL}
