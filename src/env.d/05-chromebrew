@@ -6,4 +6,6 @@
 export TMPDIR="${CREW_PREFIX}/tmp"
 
 # Give TMPDIR standard permissions
-sudo chmod 1777 "${TMPDIR}"
+if [ "$(stat -c %a "${TMPDIR}")" -ne 1777 ]; then
+  sudo chmod 1777 "${TMPDIR}"
+fi
