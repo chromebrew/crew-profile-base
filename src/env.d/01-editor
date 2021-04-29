@@ -11,4 +11,4 @@
 #VISUAL="emacs"
 
 # The SUDOEDITOR variable is for the `sudo -e` and `sudoeditor` commands.
-#SUDOEDITOR=${VISUAL}
+#SUDOEDITOR="${VISUAL}"
