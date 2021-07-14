@@ -1,5 +1,5 @@
 # Dbus settings
-DBUS_SYSTEM_BUS_ADDRESS='unix:path=/run/dbus/system_bus_socket'
+DBUS_SYSTEM_BUS_ADDRESS='unix:path=/var/run/dbus/system_bus_socket'
 [[ "$DBUS_SESSION_BUS_ADDRESS"=="disabled:" ]] && unset DBUS_SESSION_BUS_ADDRESS
 if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
   # if not found, launch a new one
