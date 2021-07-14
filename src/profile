@@ -7,6 +7,9 @@
 # Source the base /etc/profile file
 source /etc/profile
 
+# Export variables set (set allexport)
+set -a
+
 # Find chromebrew prefix
 CREW_PREFIX="$(crew const CREW_PREFIX | sed -e 's:CREW_PREFIX=::g')"
 
@@ -17,19 +20,23 @@ CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
 set +h
 
 # Load the environment
-for i in "${CREW_SYSCONFDIR}"/env.d/*; do source "${i}"; done
+for i in "${CREW_SYSCONFDIR}"/env.d/*; do [[ -f $i ]] && source "${i}"; done
 
 # Load the profile
-if [ -d ${SYSCONFDIR}/profile.d ]; then
-  for i in "${CREW_SYSCONFDIR}"/profile.d/*.sh; do source "${i}"; done
+if [ -d ${CREW_SYSCONFDIR}/profile.d ]; then
+  for i in "${CREW_SYSCONFDIR}"/profile.d/*.sh; do [[ -f $i ]] && source "${i}"; done
 fi
 
 # Load the bash directory
 if [ ! -z "${BASH}" ]; then
-  for i in "${CREW_SYSCONFDIR}"/bash.d/*; do source "${i}"; done
+  for i in "${CREW_SYSCONFDIR}"/bash.d/*; do [[ -f $i ]] && source "${i}"; done
 fi
 
 # Load the zsh directory
 if [ ! -z "${ZSH_NAME}" ]; then
-  for i in "${CREW_SYSCONFDIR}"/zsh.d/*; do source "${i}"; done
+  for i in "${CREW_SYSCONFDIR}"/zsh.d/*; do [[ -f $i ]] && source "${i}"; done
 fi
+
+unset i
+# Stop exporting variables set (unset allexport)
+set +a
