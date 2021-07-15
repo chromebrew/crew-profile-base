@@ -7,6 +7,20 @@
 # Source the base /etc/profile file
 source /etc/profile
 
+ARCH="$(uname -m)"
+# For container usage, where we are emulating armv7l via linux32
+ARCH="${ARCH/armv8l/armv7l}"
+case "${ARCH}" in
+"i686"|"armv7l"|"aarch64")
+  LIB_SUFFIX=''
+  ;;
+'x86_64')
+  LIB_SUFFIX='64'
+  ;;
+*)
+  ;;
+esac
+
 # Export variables set (set allexport)
 set -a
 
@@ -15,6 +29,8 @@ CREW_PREFIX="$(crew const CREW_PREFIX | sed -e 's:CREW_PREFIX=::g')"
 # If crew is broken, we still want CREW_PREFIX set, otherwise we
 # get breakage from files in /etc/env.d being sourced.
 : "${CREW_PREFIX:=/usr/local}"
+
+: "${CREW_LIB_PREFIX:=/usr/local/lib$LIB_SUFFIX}"
 
 # Find system configuration directory
 CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
@@ -31,12 +47,12 @@ if [ -d ${CREW_SYSCONFDIR}/profile.d ]; then
 fi
 
 # Load the bash directory
-if [ ! -z "${BASH}" ]; then
+if [ -n "${BASH}" ]; then
   for i in "${CREW_SYSCONFDIR}"/bash.d/*; do [[ -f $i ]] && source "${i}"; done
 fi
 
 # Load the zsh directory
-if [ ! -z "${ZSH_NAME}" ]; then
+if [ -n "${ZSH_NAME}" ]; then
   for i in "${CREW_SYSCONFDIR}"/zsh.d/*; do [[ -f $i ]] && source "${i}"; done
 fi
 
