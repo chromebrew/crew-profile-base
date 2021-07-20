@@ -2,10 +2,12 @@
 
 # The user's primary language (defaults to American English)
 # It is HIGHLY RECOMMENDED to use a UTF-8 locale
-LANG="POSIX"
+# LANG="POSIX"
+# Gnome apps require a UTF-8 LANG to be set.
+: "${LANG:=en_US.UTF-8}"
 
 # A colon-delineated list of languages the user knows. Defaults to LANG.
-LANGUAGE="POSIX"
+# LANGUAGE="POSIX"
 
 # Extra variables that override the LANG setting
 #LC_CTYPE=
