@@ -1,0 +1,4 @@
+# Sets the user's home directory to executable and symfollow. Avoids other package-specific workarounds.
+if ! grep -Eq '^[^ ]+ /home/chronos/user [^ ]+ ([^ ]*,)?noexec[, ]' /proc/mounts; then
+  sudo mount -o remount,rw,exec,symfollow "${HOME}"
+fi
