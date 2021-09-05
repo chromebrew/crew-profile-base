@@ -1,4 +1,4 @@
-function crew() {
+function crew () {
   case ${1} in
   install|reinstall|postinstall)
     command crew "${@}"
