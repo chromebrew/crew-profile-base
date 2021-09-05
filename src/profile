@@ -24,10 +24,8 @@ esac
 # Export variables set (set allexport)
 set -a
 
-# If crew is broken, we still want CREW_PREFIX set, otherwise we
-# get breakage from files in /etc/env.d being sourced.
+# Find chromebrew prefix
 : "${CREW_PREFIX:=/usr/local}"
-
 : "${CREW_LIB_PREFIX:=/usr/local/lib$LIB_SUFFIX}"
 
 # Find system configuration directory
