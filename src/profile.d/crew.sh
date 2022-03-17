@@ -3,5 +3,8 @@ function crew () {
   'install'|'reinstall'|'postinstall'|'upgrade')
     command crew "${@}" && source "${CREW_PREFIX}/etc/profile"
   ;;
+  *)
+    command crew "${@}"
+  ;;
   esac
 }
