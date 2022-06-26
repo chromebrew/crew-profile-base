@@ -26,8 +26,7 @@ set -a
 
 # Find chromebrew prefix
 : "${CREW_PREFIX:=/usr/local}"
-
-: "${CREW_LIB_PREFIX:=/usr/local/lib$LIB_SUFFIX}"
+: "${CREW_LIB_PREFIX:=$CREW_PREFIX/lib$LIB_SUFFIX}"
 
 # Find system configuration directory
 CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
