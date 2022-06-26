@@ -25,12 +25,10 @@ esac
 set -a
 
 # Find chromebrew prefix
-CREW_PREFIX="$(crew const CREW_PREFIX | sed -e 's:CREW_PREFIX=::g')"
-# If crew is broken, we still want CREW_PREFIX set, otherwise we
-# get breakage from files in /etc/env.d being sourced.
+# same logic can be found in lib/const.rb, line 17-25
 : "${CREW_PREFIX:=/usr/local}"
 
-: "${CREW_LIB_PREFIX:=/usr/local/lib$LIB_SUFFIX}"
+: "${CREW_LIB_PREFIX:=$CREW_PREFIX/lib$LIB_SUFFIX}"
 
 # Find system configuration directory
 CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
