@@ -25,7 +25,9 @@ esac
 set -a
 
 # Find chromebrew prefix
+# same logic can be found in lib/const.rb, line 17-25
 : "${CREW_PREFIX:=/usr/local}"
+
 : "${CREW_LIB_PREFIX:=$CREW_PREFIX/lib$LIB_SUFFIX}"
 
 # Find system configuration directory
