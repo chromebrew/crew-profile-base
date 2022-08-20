@@ -12,6 +12,6 @@ if [ $(expr index "${CREW_PREFIX}/sbin" "${PATH}") -ne 0 ]; then
 fi
 
 # Give TMPDIR standard permissions
-if [ "$(stat -c %a "${TMPDIR}")" -ne 1777 ]; then
-  sudo chmod 1777 "${TMPDIR}"
+if [ "$(stat -c %a "${TMPDIR:-/usr/local/tmp}")" -ne 1777 ]; then
+  sudo chmod 1777 "${TMPDIR:-/usr/local/tmp}"
 fi
