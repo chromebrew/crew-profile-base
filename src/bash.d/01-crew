@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 01-crew: bash completion for crew command
 
 function _crew () {
