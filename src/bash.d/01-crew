@@ -1,0 +1,67 @@
+# 01-crew: bash completion for crew command
+
+function _crew () {
+  local CREW_PACKAGES_PATH="${CREW_PREFIX}/lib/crew/packages/"
+
+  # available options
+  local avail_opts_short=(-b -t -c -d -k -L -s -S -v -V -h)
+  local avail_opts_long=(
+    --include-build-deps
+    --tree
+    --color
+    --no-color
+    --keep
+    --license 
+    --build-from-source
+    --recursive-build
+    --verbose
+    --version
+    --help
+  )
+
+  # available commands
+  local cmds=(
+    autoremove
+    build
+    const
+    deps
+    download
+    files
+    help
+    install
+    list
+    postinstall
+    reinstall
+    remove
+    search
+    sysinfo
+    update
+    upgrade
+    whatprovides
+  )
+
+  # parameter that trigger this function
+  local current="${COMP_WORDS[COMP_CWORD]}"
+
+  if [[ "${current:0:1}" == '-' ]]; then
+    # match ${current} with available option list if ${current} start with '-'
+    # save result to $COMPREPLY variable
+    COMPREPLY=( $(compgen -W "${avail_opts_short[*]} ${avail_opts_long[*]}" -- "${current}") )
+  elif [[ ${COMP_CWORD} == 1 ]]; then
+    # match ${current} with command list if ${current} is the first argument
+    COMPREPLY=( $(compgen -W "${cmds[*]}" -- "${current}") )
+  else
+    # match ${current} with available packages
+    local matched_pkgs=( ${CREW_PACKAGES_PATH}/${current}*.rb )
+
+    if [[ ${#matched_pkgs[@]} != 0 ]]; then
+      # use ls and basename to remove extension and path
+      COMPREPLY=( $(ls -1 ${matched_pkgs[@]} | xargs basename -s .rb) )
+    else
+      return 1
+    fi
+  fi
+}
+
+# register this function as completion function for crew command
+complete -F _crew crew
