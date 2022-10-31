@@ -8,7 +8,7 @@
 # Switch to Chromebrew bash as early as possible if it is installed.
 CREW_BASH_VERSION="$(bash --norc -c 'echo $BASH_VERSION')"
 if [[ -n "$CREW_BASH_VERSION" ]] && [[ "${CREW_BASH_VERSION}" != "${BASH_VERSION}" ]]; then
-  echo "Starting newer Chromebrew bash"
+  echo "Starting newer Chromebrew bash."
   exec bash
 # else
   # echo "Chromebrew bash is not newer."
