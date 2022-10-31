@@ -4,6 +4,16 @@
 # Instead, add custom environment variables to env.d/99-custom and
 # custom scripting to profile.d/99-custom
 
+# Bash in path will be the Chromebrew bash if it is installed.
+# Doing this switch as early as possible avoids weird issues.
+# See https://github.com/chromebrew/chromebrew/issues/7462
+if [[ "$(bash -c 'echo $BASH_VERSION')" != "${BASH_VERSION}" ]]; then
+  echo "Starting newer Chromebrew bash."
+  exec bash
+# else
+  # echo "Chromebrew bash is not newer."
+fi
+
 # Source the base /etc/profile file
 source /etc/profile
 
