@@ -5,8 +5,7 @@
 # custom scripting to profile.d/99-custom
 
 # Bash in path will be the Chromebrew bash if it is installed.
-# Doing this switch as early as possible avoids weird issues.
-# See https://github.com/chromebrew/chromebrew/issues/7462
+# Switch to Chromebrew bash as early as possible if it is installed.
 CREW_BASH_VERSION="$(bash --norc -c 'echo $BASH_VERSION')"
 if [[ -n "$CREW_BASH_VERSION" ]] && [[ "${CREW_BASH_VERSION}" != "${BASH_VERSION}" ]]; then
   echo "Starting newer Chromebrew bash"
