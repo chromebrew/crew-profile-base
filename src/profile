@@ -4,41 +4,42 @@
 # Instead, add custom environment variables to env.d/99-custom and
 # custom scripting to profile.d/99-custom
 
-# Bash in path will be the Chromebrew bash if it is installed.
-# Switch to Chromebrew bash as early as possible if it is installed.
-CREW_BASH_VERSION="$(bash --norc -c 'echo $BASH_VERSION')"
-if [[ -n "$CREW_BASH_VERSION" ]] && [[ "${CREW_BASH_VERSION}" != "${BASH_VERSION}" ]]; then
-  echo "Starting Chromebrew bash."
-  exec bash
-# else
-  # echo "Chromebrew bash is not installed."
-fi
-
-# Source the base /etc/profile file
-source /etc/profile
-
-ARCH="$(uname -m)"
-# For container usage, where we are emulating armv7l via linux32
-ARCH="${ARCH/armv8l/armv7l}"
-case "${ARCH}" in
-"i686"|"armv7l"|"aarch64")
-  LIB_SUFFIX=''
-  ;;
-'x86_64')
-  LIB_SUFFIX='64'
-  ;;
-*)
-  ;;
-esac
-
 # Export variables set (set allexport)
 set -a
+
+ARCH="$(uname -m)"
+LIB_SUFFIX=''
+[ "${ARCH}" = "x86_64" ] && LIB_SUFFIX='64'
 
 # Find chromebrew prefix
 # same logic can be found in lib/const.rb, line 17-25
 : "${CREW_PREFIX:=/usr/local}"
 
 : "${CREW_LIB_PREFIX:=$CREW_PREFIX/lib$LIB_SUFFIX}"
+
+# Stop exporting variables set (unset allexport)
+set +a
+
+# Bash in path will be the Chromebrew bash if it is installed.
+# Switch to Chromebrew bash as early as possible if it is installed.
+if [ -x "$CREW_PREFIX/bin/bash" ]; then
+  CREW_BASH_VERSION=$("$CREW_PREFIX"/bin/bash --norc -c "echo $BASH_VERSION")
+  if [ -n "$CREW_BASH_VERSION" ] && [ "${CREW_BASH_VERSION}" != "${BASH_VERSION}" ]; then
+    echo "Starting Chromebrew bash."
+    exec "$CREW_PREFIX"/bin/bash
+  # else
+    # echo "Chromebrew bash is not installed."
+  fi
+fi
+
+# Source the base /etc/profile file
+. /etc/profile
+
+# Export variables set (set allexport)
+set -a
+
+# For container usage, where we are emulating armv7l via linux32
+ARCH="${ARCH/armv8l/armv7l}"
 
 # Find system configuration directory
 CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
@@ -47,21 +48,21 @@ CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
 set +h
 
 # Load the environment
-for i in "${CREW_SYSCONFDIR}"/env.d/*; do [[ -f $i ]] && source "${i}"; done
+for i in "${CREW_SYSCONFDIR}"/env.d/*; do [ -f "$i" ] && . "${i}"; done
 
 # Load the profile
-if [ -d ${CREW_SYSCONFDIR}/profile.d ]; then
-  for i in "${CREW_SYSCONFDIR}"/profile.d/*.sh; do [[ -f $i ]] && source "${i}"; done
+if [ -d "${CREW_SYSCONFDIR}"/profile.d ]; then
+  for i in "${CREW_SYSCONFDIR}"/profile.d/*.sh; do [ -f "$i" ] && . "${i}"; done
 fi
 
 # Load the bash directory
 if [ -n "${BASH}" ]; then
-  for i in "${CREW_SYSCONFDIR}"/bash.d/*; do [[ -f $i ]] && source "${i}"; done
+  for i in "${CREW_SYSCONFDIR}"/bash.d/*; do [ -f "$i" ] && . "${i}"; done
 fi
 
 # Load the zsh directory
 if [ -n "${ZSH_NAME}" ]; then
-  for i in "${CREW_SYSCONFDIR}"/zsh.d/*; do [[ -f $i ]] && source "${i}"; done
+  for i in "${CREW_SYSCONFDIR}"/zsh.d/*; do [ -f "$i" ] && . "${i}"; done
 fi
 
 unset i
