@@ -7,8 +7,9 @@
 # Bash in path will be the Chromebrew bash if it is installed.
 # Doing this switch as early as possible avoids weird issues.
 # See https://github.com/chromebrew/chromebrew/issues/7462
-if [[ "$(bash -c 'echo $BASH_VERSION')" != "${BASH_VERSION}" ]]; then
-  echo "Starting newer Chromebrew bash."
+CREW_BASH_VERSION="$(bash --norc -c 'echo $BASH_VERSION')"
+if [[ -n "$CREW_BASH_VERSION" ]] && [[ "${CREW_BASH_VERSION}" != "${BASH_VERSION}" ]]; then
+  echo "Starting newer Chromebrew bash"
   exec bash
 # else
   # echo "Chromebrew bash is not newer."
