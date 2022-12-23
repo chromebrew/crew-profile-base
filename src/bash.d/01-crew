@@ -12,7 +12,7 @@ function _crew () {
     --color
     --no-color
     --keep
-    --license 
+    --license
     --build-from-source
     --recursive-build
     --verbose
@@ -55,9 +55,9 @@ function _crew () {
     # match ${current} with available packages
     local matched_pkgs=( ${CREW_PACKAGES_PATH}/${current}*.rb )
 
-    if [[ ${#matched_pkgs[@]} != 0 ]]; then
-      # use ls and basename to remove extension and path
-      COMPREPLY=( $(ls -1 ${matched_pkgs[@]} | xargs basename -s .rb) )
+    if [[ ${#matched_pkgs[@]} > 1 ]]; then
+      # use basename to remove extension and path
+      COMPREPLY=( $(basename -s .rb ${matched_pkgs[@]}) )
     else
       return 1
     fi
