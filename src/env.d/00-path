@@ -5,17 +5,11 @@
 # Don't use `export PATH="${PATH}:${CREW_PREFIX}/bin`, as it may
 # result in multiple copies of the same lines in $PATH.
 # Instead, only add ${CREW_PREFIX}/bin to ${PATH} if it isn't there already.
-if [ $(expr index "${CREW_PREFIX}/bin" "${PATH}") -ne 0 ]; then
-  export PATH="${PATH}:${CREW_PREFIX}/bin"
-fi
+[[ "$PATH" == *"${CREW_PREFIX}/bin"* ]] || export PATH="${PATH}:${CREW_PREFIX}/bin"
 
-if [ $(expr index "${CREW_PREFIX}/sbin" "${PATH}") -ne 0 ]; then
-  export PATH="${PATH}:${CREW_PREFIX}/sbin"
-fi
+[[ "$PATH" == *"${CREW_PREFIX}/sbin"* ]] || export PATH="${PATH}:${CREW_PREFIX}/sbin"
 
-if [ $(expr index "${CREW_PREFIX}/share/musl/bin" "${PATH}") -ne 0 ]; then
-  export PATH="${PATH}:${CREW_PREFIX}/share/musl/bin"
-fi
+[[ "$PATH" == *"${CREW_PREFIX}/share/musl/bin"* ]] || export PATH="${PATH}:${CREW_PREFIX}/share/musl/bin"
 
 # Give TMPDIR standard permissions
 if [ "$(stat -c %a "${TMPDIR:-/usr/local/tmp}")" -ne 1777 ]; then
