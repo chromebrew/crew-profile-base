@@ -9,7 +9,10 @@
 
 [[ "$PATH" == *"${CREW_PREFIX}/sbin"* ]] || export PATH="${PATH}:${CREW_PREFIX}/sbin"
 
-[[ "$PATH" == *"${CREW_PREFIX}/share/musl/bin"* ]] || export PATH="${PATH}:${CREW_PREFIX}/share/musl/bin"
+# Only add musl bin to path if musl is installed.
+if [ -d "${CREW_PREFIX}/share/musl/bin" ]; then
+  [[ "$PATH" == *"${CREW_PREFIX}/share/musl/bin"* ]] || export PATH="${PATH}:${CREW_PREFIX}/share/musl/bin"
+fi
 
 # Give TMPDIR standard permissions
 if [ "$(stat -c %a "${TMPDIR:-/usr/local/tmp}")" -ne 1777 ]; then
