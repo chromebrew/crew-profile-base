@@ -5,9 +5,9 @@ function _crew () {
   local CREW_PACKAGES_PATH="${CREW_PREFIX}/lib/crew/packages/"
   local CREW_LOCAL_REPO_ROOT="$(git rev-parse --show-toplevel 2> /dev/null)"
   if [[ -z "$CREW_LOCAL_REPO_ROOT" ]]; then
-    local CREW_LOCAL_PACKAGES_PATH="${CREW_PACKAGES_PATH}"
+    local CREW_LOCAL_REPO_ROOT_PACKAGES_PATH="${CREW_PACKAGES_PATH}"
   else
-    local CREW_LOCAL_PACKAGES_PATH="${CREW_LOCAL_REPO_ROOT}/packages/"
+    local CREW_LOCAL_REPO_ROOT_PACKAGES_PATH="${CREW_LOCAL_REPO_ROOT}/packages/"
   fi
 
   # available options
@@ -28,7 +28,6 @@ function _crew () {
 
   # available commands
   local cmds=(
-    autoremove
     build
     const
     deps
@@ -38,12 +37,15 @@ function _crew () {
     install
     list
     postinstall
+    prop
     reinstall
     remove
     search
     sysinfo
+    test
     update
     upgrade
+    upload
     whatprovides
   )
 
@@ -59,11 +61,12 @@ function _crew () {
     COMPREPLY=( $(compgen -W "${cmds[*]}" -- "${current}") )
   else
     # match ${current} with available packages
-    local matched_pkgs=( ${CREW_PACKAGES_PATH}/${current}*.rb ${CREW_LOCAL_PACKAGES_PATH}/${current}*.rb )
+    local matched_pkgs=( ${CREW_PACKAGES_PATH}/${current}*.rb )
+    local local_repo_root_matched_pkgs=( ${CREW_LOCAL_REPO_ROOT_PACKAGES_PATH}/${current}*.rb )
 
-    if [[ ${#matched_pkgs[@]} > 1 ]]; then
+    if [[ ${#matched_pkgs[@]} > 1 || ${#local_repo_root_matched_pkgs[@]} > 1 ]]; then
       # use basename to remove extension and path
-      COMPREPLY=( $(basename -s .rb ${matched_pkgs[@]}) )
+      COMPREPLY=( $(echo "$(basename -s .rb ${matched_pkgs[@]}) $(basename -s .rb ${local_repo_root_matched_pkgs[@]})") )
     else
       return 1
     fi

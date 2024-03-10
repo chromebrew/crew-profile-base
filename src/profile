@@ -4,21 +4,26 @@
 # Instead, add custom environment variables to env.d/99-custom and
 # custom scripting to profile.d/99-custom
 
-# Export variables set (set allexport)
-set -a
+function _set_crew_variables () {
+  # Export variables set (set allexport)
+  set -a
+  local ARCH="$(uname -m)"
+  LIB_SUFFIX=''
+  [ "${ARCH}" = "x86_64" ] && LIB_SUFFIX='64'
 
-ARCH="$(uname -m)"
-LIB_SUFFIX=''
-[ "${ARCH}" = "x86_64" ] && LIB_SUFFIX='64'
+  # Find chromebrew prefix
+  # same logic can be found in lib/const.rb, line 17-25
+  : "${CREW_PREFIX:=/usr/local}"
 
-# Find chromebrew prefix
-# same logic can be found in lib/const.rb, line 17-25
-: "${CREW_PREFIX:=/usr/local}"
+  : "${CREW_LIB_PREFIX:=$CREW_PREFIX/lib$LIB_SUFFIX}"
 
-: "${CREW_LIB_PREFIX:=$CREW_PREFIX/lib$LIB_SUFFIX}"
+  # Find system configuration directory
+  CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
 
-# Stop exporting variables set (unset allexport)
-set +a
+  # Stop exporting variables set (unset allexport)
+  set +a
+}
+_set_crew_variables
 
 # Bash in path will be the Chromebrew bash if it is installed.
 # Switch to Chromebrew bash as early as possible if it is installed.
@@ -37,12 +42,6 @@ fi
 
 # Export variables set (set allexport)
 set -a
-
-# For container usage, where we are emulating armv7l via linux32
-ARCH="${ARCH/armv8l/armv7l}"
-
-# Find system configuration directory
-CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
 
 # Disable hashing
 set +h
