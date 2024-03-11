@@ -66,7 +66,7 @@ function _crew () {
 
     if [[ ${#matched_pkgs[@]} > 1 || ${#local_repo_root_matched_pkgs[@]} > 1 ]]; then
       # use basename to remove extension and path
-      COMPREPLY=( $(echo "$(basename -s .rb ${matched_pkgs[@]}) $(basename -s .rb ${local_repo_root_matched_pkgs[@]})") )
+      COMPREPLY=( $(basename -s .rb ${matched_pkgs[@]} ${local_repo_root_matched_pkgs[@]}) )
     else
       return 1
     fi
