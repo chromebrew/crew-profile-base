@@ -29,6 +29,7 @@ function _crew () {
   # available commands
   local cmds=(
     build
+    check
     const
     deps
     download
