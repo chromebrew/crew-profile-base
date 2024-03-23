@@ -1,0 +1,2 @@
+# Immediately save each command executed to history, so that crew opening a new shell on exit is less disruptive.
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
