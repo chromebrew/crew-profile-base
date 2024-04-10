@@ -4,6 +4,8 @@
 # Instead, add custom environment variables to env.d/99-custom and
 # custom scripting to profile.d/99-custom
 
+shopt -s extglob
+
 function _set_crew_variables () {
   # Export variables set (set allexport)
   set -a
