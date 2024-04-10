@@ -1,5 +1,9 @@
 # The user's preferred pager
 
+set -a
+
 PAGER="more"
 #PAGER="less"
 #PAGER="most"
+
+set +a
