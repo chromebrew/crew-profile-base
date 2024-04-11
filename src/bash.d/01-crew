@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # 01-crew: bash completion for crew command
 
+shopt -s extglob
+
 function _crew () {
   local CREW_PACKAGES_PATH="${CREW_PREFIX}/lib/crew/packages/"
   local CREW_LOCAL_REPO_ROOT="$(git rev-parse --show-toplevel 2> /dev/null)"

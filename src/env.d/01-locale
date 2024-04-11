@@ -1,5 +1,7 @@
 # Locale settings
 
+set -a
+
 # The user's primary language (defaults to American English)
 # It is HIGHLY RECOMMENDED to use a UTF-8 locale
 # LANG="POSIX"
@@ -26,3 +28,5 @@
 # This variable overrides all previous variables except LANGUAGE
 # Dangerous to set, leave unset unless you know what you're doing
 #LC_ALL=
+
+set +a

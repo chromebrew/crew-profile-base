@@ -1,6 +1,6 @@
 # The user's preferred editor
 
-
+set -a
 # The EDITOR variable is for terminals without special capabilities, programs will prefer VISUAL.
 #EDITOR="vi -e"
 
@@ -12,3 +12,5 @@
 
 # The SUDOEDITOR variable is for the `sudo -e` and `sudoeditor` commands.
 #SUDOEDITOR="${VISUAL}"
+
+set +a
