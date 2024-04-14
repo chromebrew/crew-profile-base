@@ -49,6 +49,7 @@ fi
 # Load the bash directory
 if [ -n "${BASH}" ]; then
   for i in "${CREW_SYSCONFDIR}"/bash.d/*; do [ -f "$i" ] && . "${i}"; done
+  trap "source ~/.bashrc" USR1
 fi
 
 # Load the zsh directory
