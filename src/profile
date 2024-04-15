@@ -49,6 +49,9 @@ fi
 # Load the bash directory
 if [ -n "${BASH}" ]; then
   for i in "${CREW_SYSCONFDIR}"/bash.d/*; do [ -f "$i" ] && . "${i}"; done
+  trap "source ~/.bashrc" USR1
+  # Change bash process name to indicate trap has been set.
+  echo -n "bash [trap set]" > /proc/$$/comm
 fi
 
 # Load the zsh directory
