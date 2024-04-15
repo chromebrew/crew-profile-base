@@ -50,7 +50,8 @@ fi
 if [ -n "${BASH}" ]; then
   for i in "${CREW_SYSCONFDIR}"/bash.d/*; do [ -f "$i" ] && . "${i}"; done
   trap "source ~/.bashrc" USR1
-  export CREW_SOURCE_BASHRC_ACTIVATED=1
+  # open /tmp/.crew-autosource as file descriptor 20
+  exec 20> /tmp/.crew-autosource
 fi
 
 # Load the zsh directory
