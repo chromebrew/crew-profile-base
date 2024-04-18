@@ -29,7 +29,7 @@ function _glibc_check () {
   crew_installed_glibc_package_name="glibc_lib${crew_installed_glibc_package_version%-*}"
   installed_glibc_version=$(LD_LIBRARY_PATH= /lib"$LIB_SUFFIX"/libc.so.6 | LD_LIBRARY_PATH= /usr/bin/awk -F version 'NR==1{{gsub (" ", "", $0) ; print substr($2, 1, length($2)-1)}}')
   if [ "${crew_installed_glibc_version%-*}" != "$installed_glibc_version" ]; then
-    LD_LIBRARY_PATH= /bin/grep .so /usr/local/etc/crew/meta/"${crew_installed_glibc_package_name}".filelist | LD_LIBRARY_PATH=  /bin/grep -v gconv | LD_LIBRARY_PATH= /usr/bin/xargs /bin/rm -rf
+    LD_LIBRARY_PATH= /bin/grep .so $CREW_PREFIX/etc/crew/meta/"${crew_installed_glibc_package_name}".filelist | LD_LIBRARY_PATH=  /bin/grep -v gconv | LD_LIBRARY_PATH= /usr/bin/xargs /bin/rm -rf
     export LD_LIBRARY_PATH=$CREW_LIB_PREFIX:/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX
     crew update ; yes | crew upgrade
   fi
