@@ -24,7 +24,7 @@ function _glibc_check () {
   # Workaround for if the ChromeOS glibc has been updated from under us
   # by a ChromeOS upgrade.
   # OLD_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
-  crew_installed_glibc_version=$(LD_LIBRARY_PATH= /usr/bin/jq --arg key glibc -r '.installed_packages[] | select(.name == $key )| .version ' /usr/local/etc/crew/device.json)
+  crew_installed_glibc_version=$(LD_LIBRARY_PATH= /usr/bin/jq --arg key glibc -r '.installed_packages[] | select(.name == $key )| .version ' $CREW_PREFIX/etc/crew/device.json)
   crew_installed_glibc_package_version="${crew_installed_glibc_version//.}"
   crew_installed_glibc_package_name="glibc_lib${crew_installed_glibc_package_version%-*}"
   installed_glibc_version=$(LD_LIBRARY_PATH= /lib"$LIB_SUFFIX"/libc.so.6 | LD_LIBRARY_PATH= /usr/bin/awk -F version 'NR==1{{gsub (" ", "", $0) ; print substr($2, 1, length($2)-1)}}')
