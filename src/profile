@@ -25,7 +25,7 @@ function _glibc_check () {
   # by a ChromeOS upgrade.
   crew_installed_glibc_version=$(/usr/bin/jq --arg key glibc -r '.installed_packages[] | select(.name == $key )| .version ' /usr/local/etc/crew/device.json)
   installed_glibc_version=$(/lib"$LIB_SUFFIX"/libc.so.6 | /usr/bin/awk -F version 'NR==1{{gsub (" ", "", $0) ; print substr($2, 1, length($2)-1)}}')
-  if [ "$crew_installed_glibc_version" != "$installed_glibc_version" ]; then
+  if [ "${crew_installed_glibc_version%-*}" != "$installed_glibc_version" ]; then
     unset LD_LIBRARY_PATH
     /bin/grep .so /usr/local/etc/crew/meta/glibc_lib"${crew_installed_glibc_version//.}".filelist | /bin/grep -v gconv | /usr/bin/xargs /bin/rm -rf
     export LD_LIBRARY_PATH=$CREW_LIB_PREFIX:/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX
