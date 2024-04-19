@@ -35,7 +35,8 @@ function _glibc_check () {
     elif [[ -f "$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_b}".filelist ]]; then
       crew_installed_glibc_package_filelist="$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_b}".filelist
     else
-      return 0 2>/dev/null || exit 0
+      # Return or exit depending upon whether script was sourced.
+      (return 0 2>/dev/null) && return 0 || exit 0
     fi
     LD_LIBRARY_PATH= /bin/grep .so "$crew_installed_glibc_package_filelist" | LD_LIBRARY_PATH=  /bin/grep -v gconv | LD_LIBRARY_PATH= /usr/bin/xargs /bin/rm -rf
     export LD_LIBRARY_PATH=$CREW_LIB_PREFIX:/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX
