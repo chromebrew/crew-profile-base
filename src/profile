@@ -59,6 +59,7 @@ if [ -x "$CREW_PREFIX/bin/bash" ]; then
     echo "Starting Chromebrew bash."
     # enable debugging for now if in container to figure out the unit test issues.
     if [[ -f /.dockerenv ]]; then
+      echo "Running container specific command..."
       exec env LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash -x
     else
       exec env LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash
