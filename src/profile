@@ -43,37 +43,24 @@ function _glibc_check () {
   fi
   # LD_LIBRARY_PATH=$OLD_LD_LIBRARY_PATH
 }
-# _glibc_check
+_glibc_check
 
-# Container debug enablement.
-if [[ -f /.dockerenv ]]; then
-  echo "in container: enabling debugging"
-  set -x
-fi
-
+_crew_bash () {
 # Bash in path will be the Chromebrew bash if it is installed.
 # Switch to Chromebrew bash as early as possible if it is installed.
 if [ -x "$CREW_PREFIX/bin/bash" ]; then
   CREW_BASH_VERSION=$(LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash --norc --version | LD_LIBRARY_PATH= /usr/bin/awk 'NR==1{print $4}')
   if [ -n "$CREW_BASH_VERSION" ] && [ "${CREW_BASH_VERSION}" != "${BASH_VERSION}" ]; then
     echo "Starting Chromebrew bash."
-    # enable debugging for now if in container to figure out the unit test issues.
-    if [[ -f /.dockerenv ]]; then
-      echo "Running container specific command..."
-      exec env LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash -x
-    else
-      exec env LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash
-    fi
+    exec env LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash "$@"
+  fi
   # else
     # echo "Chromebrew bash is not installed."
-  fi
+  # fi
 fi
-
-# container debug disablement
-#if [[ -f /.dockerenv ]]; then
-  #echo "disabling container debugging"
-  #set +x
-#fi
+}
+# This breaks passing a bash command line to docker containers.
+[[ -f /.dockerenv ]] || _crew_bash
 
 # Source the base /etc/profile file
 . /etc/profile
