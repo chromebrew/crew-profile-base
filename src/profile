@@ -23,31 +23,40 @@ _set_crew_variables
 function _glibc_check () {
   # Workaround for if the ChromeOS glibc has been updated from under us
   # by a ChromeOS upgrade.
-  # OLD_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
-  crew_installed_glibc_version=$(LD_LIBRARY_PATH= /usr/bin/jq --arg key glibc -r '.installed_packages[] | select(.name == $key )| .version ' $CREW_PREFIX/etc/crew/device.json)
+  crew_installed_glibc_version=$(LD_LIBRARY_PATH= /usr/bin/jq --arg key glibc -r '.installed_packages[] | select(.name == $key )| .version ' "$CREW_PREFIX"/etc/crew/device.json)
   crew_installed_glibc_package_version="${crew_installed_glibc_version//.}"
-  crew_installed_glibc_package_name="glibc_lib${crew_installed_glibc_package_version%-*}"
+  crew_installed_glibc_package_name_a="glibc_lib${crew_installed_glibc_package_version%-*}"
+  crew_installed_glibc_package_name_b="glibc_${crew_installed_glibc_package_version%-*}"
   installed_glibc_version=$(LD_LIBRARY_PATH= /lib"$LIB_SUFFIX"/libc.so.6 | LD_LIBRARY_PATH= /usr/bin/awk -F version 'NR==1{{gsub (" ", "", $0) ; print substr($2, 1, length($2)-1)}}')
   if [ "${crew_installed_glibc_version%-*}" != "$installed_glibc_version" ]; then
-    LD_LIBRARY_PATH= /bin/grep .so $CREW_PREFIX/etc/crew/meta/"${crew_installed_glibc_package_name}".filelist | LD_LIBRARY_PATH=  /bin/grep -v gconv | LD_LIBRARY_PATH= /usr/bin/xargs /bin/rm -rf
+    if [[ -f "$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_a}".filelist ]]; then
+      crew_installed_glibc_package_filelist="$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_a}".filelist
+    elif [[ -f "$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_b}".filelist ]]; then
+      crew_installed_glibc_package_filelist="$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_b}".filelist
+    else
+      # Return or exit depending upon whether script was sourced.
+      (return 0 2>/dev/null) && return 0 || exit 0
+    fi
+    LD_LIBRARY_PATH= /bin/grep .so "$crew_installed_glibc_package_filelist" | LD_LIBRARY_PATH=  /bin/grep -v gconv | LD_LIBRARY_PATH= /usr/bin/xargs /bin/rm -rf
     export LD_LIBRARY_PATH=$CREW_LIB_PREFIX:/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX
     crew update ; yes | crew upgrade
   fi
-  # LD_LIBRARY_PATH=$OLD_LD_LIBRARY_PATH
 }
 _glibc_check
 
+_crew_bash () {
 # Bash in path will be the Chromebrew bash if it is installed.
 # Switch to Chromebrew bash as early as possible if it is installed.
 if [ -x "$CREW_PREFIX/bin/bash" ]; then
   CREW_BASH_VERSION=$(LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash --norc --version | LD_LIBRARY_PATH= /usr/bin/awk 'NR==1{print $4}')
   if [ -n "$CREW_BASH_VERSION" ] && [ "${CREW_BASH_VERSION}" != "${BASH_VERSION}" ]; then
     echo "Starting Chromebrew bash."
-    exec env LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash
-  # else
-    # echo "Chromebrew bash is not installed."
+    exec env LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash "$@"
   fi
 fi
+}
+# This breaks passing a bash command line to docker containers.
+[[ -f /.dockerenv ]] || _crew_bash
 
 # Source the base /etc/profile file
 . /etc/profile
