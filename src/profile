@@ -70,10 +70,10 @@ if [ -x "$CREW_PREFIX/bin/bash" ]; then
 fi
 
 # container debug disablement
-if [[ -f /.dockerenv ]]; then
-  echo "disabling container debugging"
-  set +x
-fi
+#if [[ -f /.dockerenv ]]; then
+  #echo "disabling container debugging"
+  #set +x
+#fi
 
 # Source the base /etc/profile file
 . /etc/profile
