@@ -46,7 +46,10 @@ function _glibc_check () {
 _glibc_check
 
 # Container debug enablement.
-[[ -f /.dockerenv ]] && set -x
+if [[ -f /.dockerenv ]]; then
+  echo "in container: enabling debugging"
+  set -x
+fi
 
 # Bash in path will be the Chromebrew bash if it is installed.
 # Switch to Chromebrew bash as early as possible if it is installed.
@@ -66,7 +69,10 @@ if [ -x "$CREW_PREFIX/bin/bash" ]; then
 fi
 
 # container debug disablement
-[[ -f /.dockerenv ]] && set +x
+if [[ -f /.dockerenv ]]; then
+  echo "disabling container debugging"
+  set +x
+fi
 
 # Source the base /etc/profile file
 . /etc/profile
