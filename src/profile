@@ -45,17 +45,21 @@ function _glibc_check () {
 _glibc_check
 
 _crew_bash () {
-# Bash in path will be the Chromebrew bash if it is installed.
-# Switch to Chromebrew bash as early as possible if it is installed.
-if [ -x "$CREW_PREFIX/bin/bash" ]; then
-  CREW_BASH_VERSION=$(LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash --norc --version | LD_LIBRARY_PATH= /usr/bin/awk 'NR==1{print $4}')
-  if [ -n "$CREW_BASH_VERSION" ] && [ "${CREW_BASH_VERSION}" != "${BASH_VERSION}" ]; then
-    echo "Starting Chromebrew bash."
-    exec env LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash "$@"
+  # Bash in path will be the Chromebrew bash if it is installed.
+  # Switch to Chromebrew bash as early as possible if it is installed.
+  if [ -x "$CREW_PREFIX/bin/bash" ]; then
+    CREW_BASH_VERSION=$(LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash --norc --version | LD_LIBRARY_PATH= /usr/bin/awk 'NR==1{print $4}')
+    if [ -n "$CREW_BASH_VERSION" ] && [ "${CREW_BASH_VERSION}" != "${BASH_VERSION}" ]; then
+      echo "Starting Chromebrew bash."
+      exec env LD_LIBRARY_PATH="$CREW_LIB_PREFIX":/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX "$CREW_PREFIX"/bin/bash -i
+    fi
   fi
-fi
 }
-# This breaks passing a bash command line to docker containers.
+# Parameters passed to a container invocation with bash -c do not get
+# here such that they can then be passed to a subshell, so do not exit
+# to a subshell if in a container invocation, such as used for the
+# Chromebrew PR unit tests, as otherwise the container will block on the
+# subshell invocation.
 [[ -f /.dockerenv ]] || _crew_bash
 
 # Source the base /etc/profile file
