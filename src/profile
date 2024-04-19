@@ -43,7 +43,7 @@ function _glibc_check () {
   fi
   # LD_LIBRARY_PATH=$OLD_LD_LIBRARY_PATH
 }
-_glibc_check
+# _glibc_check
 
 # Container debug enablement.
 if [[ -f /.dockerenv ]]; then
