@@ -23,7 +23,6 @@ _set_crew_variables
 function _glibc_check () {
   # Workaround for if the ChromeOS glibc has been updated from under us
   # by a ChromeOS upgrade.
-  # OLD_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
   crew_installed_glibc_version=$(LD_LIBRARY_PATH= /usr/bin/jq --arg key glibc -r '.installed_packages[] | select(.name == $key )| .version ' "$CREW_PREFIX"/etc/crew/device.json)
   crew_installed_glibc_package_version="${crew_installed_glibc_version//.}"
   crew_installed_glibc_package_name_a="glibc_lib${crew_installed_glibc_package_version%-*}"
@@ -42,7 +41,6 @@ function _glibc_check () {
     export LD_LIBRARY_PATH=$CREW_LIB_PREFIX:/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX
     crew update ; yes | crew upgrade
   fi
-  # LD_LIBRARY_PATH=$OLD_LD_LIBRARY_PATH
 }
 _glibc_check
 
