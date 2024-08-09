@@ -3,6 +3,7 @@
 # you have made.
 # Instead, add custom environment variables to env.d/99-custom and
 # custom scripting to profile.d/99-custom
+
 function _set_crew_variables () {
   local ARCH="$(LD_LIBRARY_PATH= /bin/uname -m)"
   export LIB_SUFFIX=''
