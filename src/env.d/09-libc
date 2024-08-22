@@ -1,0 +1,1 @@
+LIBC_VERSION=$(/lib"$LIB_SUFFIX"/libc.so.6 2>/dev/null | awk 'match($0, /Gentoo ([^-]+)/) {print substr($0, RSTART+7, RLENGTH-7)}')
