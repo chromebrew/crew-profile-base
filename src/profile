@@ -14,37 +14,15 @@ function _set_crew_variables () {
   # Find chromebrew prefix
   # same logic can be found in lib/const.rb, line 17-25
   : "${CREW_PREFIX:=/usr/local}"
-
   : "${CREW_LIB_PREFIX:=$CREW_PREFIX/lib$LIB_SUFFIX}"
 
   # Find system configuration directory
-  export CREW_SYSCONFDIR="${CREW_PREFIX}/etc"
-}
-_set_crew_variables
+  : "${CREW_SYSCONFDIR:-$CREW_PREFIX/etc}"
 
-function _glibc_check () {
-  # Workaround for if the ChromeOS glibc has been updated from under us
-  # by a ChromeOS upgrade.
-  crew_installed_glibc_version=$(LD_LIBRARY_PATH= /usr/bin/jq --arg key glibc -r '.installed_packages[] | select(.name == $key )| .version ' "$CREW_PREFIX"/etc/crew/device.json)
-  crew_installed_glibc_package_version="${crew_installed_glibc_version//.}"
-  crew_installed_glibc_package_name_a="glibc_lib${crew_installed_glibc_package_version%-*}"
-  crew_installed_glibc_package_name_b="glibc_${crew_installed_glibc_package_version%-*}"
-  installed_glibc_version=$(LD_LIBRARY_PATH= /lib"$LIB_SUFFIX"/libc.so.6 | LD_LIBRARY_PATH= /usr/bin/awk -F version 'NR==1{{gsub (" ", "", $0) ; print substr($2, 1, length($2)-1)}}')
-  if [ "${crew_installed_glibc_version%-*}" != "$installed_glibc_version" ]; then
-    if [[ -f "$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_a}".filelist ]]; then
-      crew_installed_glibc_package_filelist="$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_a}".filelist
-    elif [[ -f "$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_b}".filelist ]]; then
-      crew_installed_glibc_package_filelist="$CREW_PREFIX"/etc/crew/meta/"${crew_installed_glibc_package_name_b}".filelist
-    else
-      # Return or exit depending upon whether script was sourced.
-      (return 0 2>/dev/null) && return 0 || exit 0
-    fi
-    LD_LIBRARY_PATH= /bin/grep .so "$crew_installed_glibc_package_filelist" | LD_LIBRARY_PATH=  /bin/grep -v gconv | LD_LIBRARY_PATH= /usr/bin/xargs /bin/rm -rf
-    export LD_LIBRARY_PATH=$CREW_LIB_PREFIX:/lib$LIB_SUFFIX:/usr/lib$LIB_SUFFIX
-    crew update ; yes | crew upgrade
-  fi
+  export CREW_PREFIX CREW_LIB_PREFIX CREW_SYSCONFDIR
 }
-_glibc_check
+
+_set_crew_variables
 
 _crew_bash () {
   # Bash in path will be the Chromebrew bash if it is installed.
