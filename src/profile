@@ -17,7 +17,7 @@ function _set_crew_variables () {
   : "${CREW_LIB_PREFIX:=$CREW_PREFIX/lib$LIB_SUFFIX}"
 
   # Find system configuration directory
-  : "${CREW_SYSCONFDIR:-$CREW_PREFIX/etc}"
+  : "${CREW_SYSCONFDIR:=$CREW_PREFIX/etc}"
 
   export CREW_PREFIX CREW_LIB_PREFIX CREW_SYSCONFDIR
 }
