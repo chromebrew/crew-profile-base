@@ -1,2 +1,2 @@
 # Set GCONV_PATH since the built-in glibc files are limited, causing iconv checks fail.
-export GCONV_PATH=${CREW_LIB_PREFIX}/gconv
+GCONV_PATH=${CREW_LIB_PREFIX}/gconv

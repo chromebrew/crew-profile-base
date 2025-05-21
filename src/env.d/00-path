@@ -5,13 +5,13 @@
 # Don't use `export PATH="${PATH}:${CREW_PREFIX}/bin`, as it may
 # result in multiple copies of the same lines in $PATH.
 # Instead, only add ${CREW_PREFIX}/bin to ${PATH} if it isn't there already.
-[[ "$PATH" == *"${CREW_PREFIX}/bin"* ]] || export PATH="${PATH}:${CREW_PREFIX}/bin"
+[[ "$PATH" == *"${CREW_PREFIX}/bin"* ]] || PATH="${PATH}:${CREW_PREFIX}/bin"
 
-[[ "$PATH" == *"${CREW_PREFIX}/sbin"* ]] || export PATH="${PATH}:${CREW_PREFIX}/sbin"
+[[ "$PATH" == *"${CREW_PREFIX}/sbin"* ]] || PATH="${PATH}:${CREW_PREFIX}/sbin"
 
 # Only add musl bin to path if musl is installed.
 if [ -d "${CREW_PREFIX}/share/musl/bin" ]; then
-  [[ "$PATH" == *"${CREW_PREFIX}/share/musl/bin"* ]] || export PATH="${PATH}:${CREW_PREFIX}/share/musl/bin"
+  [[ "$PATH" == *"${CREW_PREFIX}/share/musl/bin"* ]] || PATH="${PATH}:${CREW_PREFIX}/share/musl/bin"
 fi
 
 # Give TMPDIR standard permissions
