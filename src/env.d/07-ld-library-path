@@ -6,5 +6,3 @@
 # result in multiple copies of the same lines in $LD_LIBRARY_PATH.
 # Instead, only add ${CREW_LIB_PREFIX} to ${LD_LIBRARY_PATH} if it isn't there already.
 [[ "$LD_LIBRARY_PATH" == *"$CREW_LIB_PREFIX"* ]] || LD_LIBRARY_PATH="${CREW_LIB_PREFIX}:${LD_LIBRARY_PATH}"
-# Add opt/glibc-libs if it isn't already in LD_LIBRARY_PATH.
-[[ "$LD_LIBRARY_PATH" == *"opt/glibc-libs"* ]] || LD_LIBRARY_PATH="${CREW_PREFIX}/opt/glibc-libs:${LD_LIBRARY_PATH}"
