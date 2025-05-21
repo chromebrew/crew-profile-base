@@ -1,9 +1,7 @@
 # The user's preferred pager
+# The user's preferred pager is set here by the crew_profile_base
+# postinstall.
 
-set -a
-
-PAGER="more"
+#PAGER="more"
 #PAGER="less"
-#PAGER="most"
-
-set +a
+PAGER="most"

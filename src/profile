@@ -51,6 +51,9 @@ _crew_restart_shell() {
 set +h
 
 # Load the environment
+# Do NOT have 'set -a' or 'set +a' in any of these files, as the first
+# set +a will then stop subsequent env variables from getting set in the
+# environment.
 set -a
 for i in "${CREW_SYSCONFDIR}"/env.d/*; do [ -f "$i" ] && . "${i}"; done
 set +a
