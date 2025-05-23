@@ -4,36 +4,43 @@
 # Instead, add custom environment variables to env.d/99-custom and
 # custom scripting to profile.d/99-custom
 
-# Source the base /etc/profile file
+# Source the base /etc/profile file.
 . /etc/profile
+
+# Set allexport.
+set -a
 
 # Allow force set of CREW_ARCH externally.
 : "${CREW_ARCH:=$(uname -m)}"
 [ "${CREW_ARCH}" = "x86_64" ] && CREW_LIB_SUFFIX='64' || CREW_LIB_SUFFIX=''
 
-# Find chromebrew prefix
-# same logic can be found in lib/const.rb, line 17-25
+# Find chromebrew prefix.
+# The same logic can be found early in lib/const.rb.
 : "${CREW_PREFIX:=/usr/local}"
 : "${CREW_LIB_PREFIX:=${CREW_PREFIX}/lib${CREW_LIB_SUFFIX}}"
 
-# Find system configuration directory
+# Set location of the Chromebrew glibc.
+: "${CREW_GLIBC_PREFIX:=${CREW_PREFIX}/opt/glibc-libs}"
+
+# Find system configuration directory.
 : "${CREW_SYSCONFDIR:=${CREW_PREFIX}/etc}"
 
-export CREW_ARCH CREW_PREFIX CREW_LIB_PREFIX CREW_LIB_SUFFIX CREW_SYSCONFDIR
+# Unset allexport.
+set +a
 
 _crew_restart_shell() {
   declare -a cmdline
   declare -i argc=0
 
-  # Set LD_PRELOAD to crew-preload.so if exist
+  # Set LD_PRELOAD to crew-preload.so if it exists.
   [ -x "${CREW_LIB_PREFIX}/crew-preload.so" ] && : "${LD_PRELOAD:=${CREW_LIB_PREFIX}/crew-preload.so}"
 
-  # Extract parameters used to invoke the current shell from /proc/self/cmdline
+  # Extract parameters used to invoke the current shell from /proc/self/cmdline.
   { read -rd $'\0'; while read -rd $'\0' arg; do cmdline[$(( i++ ))]="${arg}"; done } < /proc/self/cmdline
 
   export LD_PRELOAD CREW_SHELL=1
 
-  # Only attempt to restart shell when bash is running in interactive mode
+  # Only attempt to restart shell when bash is running in interactive mode.
   if [[ "$-" == *i* ]]; then
     if [ -x "${CREW_PREFIX}/bin/bash" ]; then
       echo "Starting Chromebrew shell..."
@@ -47,10 +54,10 @@ _crew_restart_shell() {
 # Switch to Chromebrew provided shell (${CREW_PREFIX}/bin/sh) as early as possible if exists.
 [ "${CREW_SHELL}" = 1 ] || _crew_restart_shell
 
-# Disable hashing
+# Disable hashing.
 set +h
 
-# Load the environment
+# Load the environment.
 # Do NOT have 'set -a' or 'set +a' in any of these files, as the first
 # set +a will then stop subsequent env variables from getting set in the
 # environment.
@@ -58,12 +65,12 @@ set -a
 for i in "${CREW_SYSCONFDIR}"/env.d/*; do [ -f "$i" ] && . "${i}"; done
 set +a
 
-# Load the profile
+# Load the profile.
 if [ -d "${CREW_SYSCONFDIR}"/profile.d ]; then
   for i in "${CREW_SYSCONFDIR}"/profile.d/*.sh; do [ -f "$i" ] && . "${i}"; done
 fi
 
-# Load the bash directory
+# Load the bash directory.
 if [ -n "${BASH}" ]; then
   for i in "${CREW_SYSCONFDIR}"/bash.d/*; do [ -f "$i" ] && . "${i}"; done
   trap "source ~/.bashrc" USR1
@@ -71,7 +78,7 @@ if [ -n "${BASH}" ]; then
   echo -n "bash [trap set]" > /proc/$$/comm
 fi
 
-# Load the zsh directory
+# Load the zsh directory.
 if [ -n "${ZSH_NAME}" ]; then
   for i in "${CREW_SYSCONFDIR}"/zsh.d/*; do [ -f "$i" ] && . "${i}"; done
 fi
