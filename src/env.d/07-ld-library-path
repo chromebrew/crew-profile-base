@@ -4,7 +4,7 @@
 
 if [[ "${CREW_ARCH}" == "armv7l" ]] || [[ "${CREW_ARCH}" == "armv8l" ]] || [[ "${CREW_ARCH}" == "aarch64" ]] ; then
   # Handle arm multarch.
-  LD_LIBRARY_PATH="${CREW_PREFIX}/lib64:/usr/lib64:/lib64:${CREW_PREFIX}/lib${LIB_SUFFIX}:/usr/lib${LIB_SUFFIX}:/lib${LIB_SUFFIX}"
+  LD_LIBRARY_PATH="${CREW_PREFIX}/lib64:/usr/lib64:/lib64:${CREW_PREFIX}/lib${CREW_LIB_SUFFIX}:/usr/lib${CREW_LIB_SUFFIX}:/lib${CREW_LIB_SUFFIX}"
 else
-  LD_LIBRARY_PATH="${CREW_PREFIX}/lib${LIB_SUFFIX}:/usr/lib${LIB_SUFFIX}:/lib${LIB_SUFFIX}"
+  LD_LIBRARY_PATH="${CREW_PREFIX}/lib${CREW_LIB_SUFFIX}:/usr/lib${CREW_LIB_SUFFIX}:/lib${CREW_LIB_SUFFIX}"
 fi
