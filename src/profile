@@ -33,6 +33,8 @@ _crew_restart_shell() {
   declare -i argc=0
 
   # Set LD_PRELOAD to crew-preload.so if it exists.
+  # The path to LD_PRELOAD should depend upon the default library search
+  # path, which is architecture dependent.
   [ -x "${CREW_LIB_PREFIX}/crew-preload.so" ] && : "${LD_PRELOAD:=crew-preload.so}"
 
   # Extract parameters used to invoke the current shell from /proc/self/cmdline.
