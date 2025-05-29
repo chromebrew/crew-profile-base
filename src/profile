@@ -6,9 +6,6 @@
 
 # Source the base /etc/profile file.
 . /etc/profile
-# We don't want /usr/local/lib64 automatically added to the path for
-# the newer aarch64/armv7l multiarch Milestone releases.
-unset LD_LIBRARY_PATH
 
 # Set allexport.
 set -a
