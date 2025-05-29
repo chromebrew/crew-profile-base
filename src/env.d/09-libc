@@ -4,5 +4,5 @@
 if [ -x "$CREW_GLIBC_PREFIX"/libc.so.6 ]; then
   LIBC_VERSION=$("$CREW_GLIBC_PREFIX"/libc.so.6 2>/dev/null | awk 'NR==1{print substr($NF, 1, length($NF)-1)}')
 else
-  LIBC_VERSION=$(/lib"$LIB_SUFFIX"/libc.so.6 2>/dev/null | awk 'match($0, /Gentoo ([^-]+)/) {print substr($0, RSTART+7, RLENGTH-7)}')
+  LIBC_VERSION=$(/lib"$CREW_LIB_SUFFIX"/libc.so.6 2>/dev/null | awk 'match($0, /Gentoo ([^-]+)/) {print substr($0, RSTART+7, RLENGTH-7)}')
 fi
