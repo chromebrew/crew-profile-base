@@ -5,8 +5,4 @@
 # Don't use `export LD_LIBRARY_PATH="${CREW_LIB_PREFIX}:${LD_LIBRARY_PATH}`, as it may
 # result in multiple copies of the same lines in $LD_LIBRARY_PATH.
 # Instead, only add ${CREW_LIB_PREFIX} to ${LD_LIBRARY_PATH} if it isn't there already.
-#
-# Disabled to see if we can get away without setting this, since we want our
-# LD_PRELOAD binary for a given binary's architecture to load depending upon
-# the architecture specific library path under our CREW_PREFIX.
-#[[ "$LD_LIBRARY_PATH" == *"$CREW_LIB_PREFIX"* ]] || LD_LIBRARY_PATH="${CREW_LIB_PREFIX}:${LD_LIBRARY_PATH}"
+[[ "$LD_LIBRARY_PATH" == *"$CREW_LIB_PREFIX"* ]] || LD_LIBRARY_PATH="${CREW_LIB_PREFIX}:${LD_LIBRARY_PATH}"

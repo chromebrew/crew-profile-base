@@ -6,9 +6,6 @@
 
 # Source the base /etc/profile file.
 . /etc/profile
-# We don't want /usr/local/lib64 automatically added to the path for
-# the newer aarch64/armv7l multiarch Milestone releases.
-unset LD_LIBRARY_PATH
 
 # Set allexport.
 set -a
@@ -36,9 +33,7 @@ _crew_restart_shell() {
   declare -i argc=0
 
   # Set LD_PRELOAD to crew-preload.so if it exists.
-  # The path to LD_PRELOAD should depend upon the default library search
-  # path, which is architecture dependent.
-  [ -x "${CREW_LIB_PREFIX}/crew-preload.so" ] && : "${LD_PRELOAD:=crew-preload.so}"
+  [ -x "${CREW_LIB_PREFIX}/crew-preload.so" ] && : "${LD_PRELOAD:=${CREW_LIB_PREFIX}/crew-preload.so}"
 
   # Extract parameters used to invoke the current shell from /proc/self/cmdline.
   { read -rd $'\0'; while read -rd $'\0' arg; do cmdline[$(( i++ ))]="${arg}"; done } < /proc/self/cmdline
