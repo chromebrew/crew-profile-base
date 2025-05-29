@@ -33,7 +33,7 @@ _crew_restart_shell() {
   declare -i argc=0
 
   # Set LD_PRELOAD to crew-preload.so if it exists.
-  [ -x "${CREW_LIB_PREFIX}/crew-preload.so" ] && : "${LD_PRELOAD:=${CREW_LIB_PREFIX}/crew-preload.so}"
+  [ -x "${CREW_LIB_PREFIX}/crew-preload.so" ] && : "${LD_PRELOAD:=crew-preload.so}"
 
   # Extract parameters used to invoke the current shell from /proc/self/cmdline.
   { read -rd $'\0'; while read -rd $'\0' arg; do cmdline[$(( i++ ))]="${arg}"; done } < /proc/self/cmdline
