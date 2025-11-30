@@ -34,6 +34,7 @@ function _crew () {
     check
     const
     deps
+    diskstat
     download
     files
     help
@@ -45,10 +46,12 @@ function _crew () {
     remove
     search
     sysinfo
-    test
+    update_package_file
     update
     upgrade
     upload
+    upstream
+    version
     whatprovides
   )
 
