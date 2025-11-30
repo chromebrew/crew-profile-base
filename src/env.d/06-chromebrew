@@ -7,5 +7,5 @@ TMPDIR="${CREW_PREFIX}/tmp"
 
 # Give TMPDIR standard permissions
 if [ "$(stat -c %a "${TMPDIR}")" -ne 1777 ]; then
-  sudo chmod 1777 "${TMPDIR}"
+  chmod 1777 "${TMPDIR}"
 fi

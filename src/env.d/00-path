@@ -13,8 +13,3 @@
 if [ -d "${CREW_PREFIX}/share/musl/bin" ]; then
   [[ "$PATH" == *"${CREW_PREFIX}/share/musl/bin"* ]] || PATH="${PATH}:${CREW_PREFIX}/share/musl/bin"
 fi
-
-# Give TMPDIR standard permissions
-if [ "$(stat -c %a "${TMPDIR:-/usr/local/tmp}")" -ne 1777 ]; then
-  sudo chmod 1777 "${TMPDIR:-/usr/local/tmp}"
-fi

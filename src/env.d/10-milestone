@@ -1,1 +1,0 @@
-CHROMEOS_RELEASE_CHROME_MILESTONE=$(grep CHROMEOS_RELEASE_CHROME_MILESTONE /etc/lsb-release | awk -F= '{print $2}')
